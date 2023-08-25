@@ -1,17 +1,16 @@
 FROM golang:1.21-alpine
 
-CMD [ "openssl s_client -showcerts -connect storage.googleapis.com:443 </dev/null | openssl x509 -text -noout" ]
+RUN mkdir -p /app
 
-# RUN mkdir -p /app
+WORKDIR /app
 
-# WORKDIR /app
+COPY go.mod ./
+COPY go.sum ./
+RUN go mod download
 
-# COPY go.mod ./
-# RUN go mod download
+COPY *.go ./
 
-# COPY *.go ./
+RUN go build -o /fullstack-docker
+EXPOSE $PORT
 
-# RUN go build -o /fullstack-docker
-# EXPOSE $PORT
-
-# CMD [ "/fullstack-docker" ]
+CMD [ "/fullstack-docker" ]

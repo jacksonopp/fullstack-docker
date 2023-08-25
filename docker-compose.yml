@@ -1,17 +1,26 @@
 version: '3'
 services:
+  fullstack-docker-fe:
+    build:
+      context: ./client
+      dockerfile: client.dockerfile
+    environment:
+      - PORT=3000
+      - PUBLIC_API_URL=http://127.0.0.1:8080
+    ports:
+      - 5173:3000
+    networks:
+      - fullstack-docker
+
   fullstack-docker-be:
     build:
       context: ./server
       dockerfile: backend.dockerfile
     ports:
       - 8080:8080
-  # fullstack-docker-fe:
-  #   build:
-  #     context: ./client
-  #     dockerfile: client.dockerfile
-  #   environment:
-  #     - PORT=3000
-  #     - PUBLIC_API_URL=http://fullstack-docker-be:8080
-  #   ports:
-  #     - 3000:3000
+    networks:
+      - fullstack-docker
+
+networks:
+  fullstack-docker:
+    driver: bridge
