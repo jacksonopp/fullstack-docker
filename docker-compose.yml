@@ -1,6 +1,6 @@
 version: '3'
 services:
-  fullstack-docker-fe:
+  client:
     build:
       context: ./client
       dockerfile: client.dockerfile
@@ -12,7 +12,7 @@ services:
     networks:
       - fullstack-docker
 
-  fullstack-docker-be:
+  server:
     build:
       context: ./server
       dockerfile: backend.dockerfile
@@ -20,6 +20,14 @@ services:
       - 8080:8080
     networks:
       - fullstack-docker
+
+  nginx:
+    restart: always
+    build:
+      context: ./nginx
+      dockerfile: nginx.dockerfile
+    ports:
+      - 80:80
 
 networks:
   fullstack-docker:
